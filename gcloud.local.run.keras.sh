@@ -14,3 +14,4 @@ gcloud ml-engine local train \
 --val-csv=$val_csv \
 --train-epocs=$train_epocs \
 --lr=$lr
+--batch-sizes=4
