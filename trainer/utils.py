@@ -33,6 +33,16 @@ class DataGenerator(object):
     self.data_path = data_path
     self.train_csv = train_csv
     self.val_csv = val_csv
+  '''
+  @TrongDuc
+  Cut file csv to reduce data
+  '''
+  
+  def cut_csv(file_csv, n):
+    if n == 0:
+      return file_csv.read()
+    arr = file_csv.read().split('\n')[:-n]
+    return "\n".join(str(x) for x in arr)
 
   def get_train_generator(self, batch_size, is_full_data = False):
     with file_io.FileIO(self.data_path + self.train_csv, mode='r') as train_f:
@@ -42,7 +52,7 @@ class DataGenerator(object):
             output_f.write(train_f.read()+"\n"+val_f.read())
       else:
         with file_io.FileIO("dataset/"+self.train_csv, mode='w+') as output_f:
-          output_f.write(train_f.read())
+          output_f.write(cut_csv(train_f, 30000))
     return self.idg.flow_from_directory("dataset/tops/",
                                         batch_size = batch_size,
                                         target_size = self.target_size,shuffle=False,
@@ -51,7 +61,7 @@ class DataGenerator(object):
   def get_test_generator(self, batch_size):
     with file_io.FileIO(self.data_path + self.val_csv, mode='r') as val_f:
       with file_io.FileIO("dataset/"+self.val_csv, mode='w+') as output_f:
-        output_f.write(val_f.read())
+        output_f.write(cut_csv(val_f, 10000))
     return self.idg.flow_from_directory("dataset/tops/",
                                         batch_size = batch_size,
                                         target_size = self.target_size, shuffle=False,

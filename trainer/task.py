@@ -49,8 +49,8 @@ def main(job_dir, data_path, model_id, weights_path, loss, train_csv, val_csv, b
     exp.param("train_csv", train_csv)
     exp.param("val_csv", val_csv)
 
-  logging.info("Downloading Training Image from path {}".format(data_path))
-  downloads_training_images(data_path, is_cropped=("_cropped" in job_dir))
+  # logging.info("Downloading Training Image from path {}".format(data_path))
+  # downloads_training_images(data_path, is_cropped=("_cropped" in job_dir))
 
   logging.info("Building Model: {}".format(model_id))
   if model_id in globals():
