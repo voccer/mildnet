@@ -17,20 +17,31 @@ class DataGenerator(object):
     self.target_size = target_size
     self.idg = ImageDataGeneratorCustom(**params)
     self.data_path = data_path
-    self.train_file = train_file
-    self.val_file = val_file
+    self.train_csv = train_csv
+    self.val_csv = val_csv
 
   def get_train_generator(self, batch_size, is_full_data = False):
-    return self.idg.flow_from_directory("data_custom/images/",
+    with file_io.FileIO(self.train_csv, mode='r') as train_f:
+      if is_full_data:
+        with file_io.FileIO(self.data_path + self.train_csv, mode='r') as val_f:
+          with file_io.FileIO("dataset/"+self.train_csv, mode='w+') as output_f:
+            output_f.write(train_f.read()+"\n"+val_f.read())
+      else:
+        with file_io.FileIO(self.train_csv, mode='w+') as output_f:
+          output_f.write(train_f.read())
+    return self.idg.flow_from_directory("data_custom/images",
                                         batch_size = batch_size,
                                         target_size = self.target_size,shuffle=False,
-                                        triplet_path = self.train_file)
+                                        triplet_path ='dataset/' + self.train_csv)
 
   def get_test_generator(self, batch_size):
+    with file_io.FileIO(self.val_csv, mode='r') as val_f:
+      with file_io.FileIO("dataset/"+self.val_csv, mode='w+') as output_f:
+        output_f.write(val_f.read())
     return self.idg.flow_from_directory("data_custom/images/",
                                         batch_size = batch_size,
                                         target_size = self.target_size, shuffle=False,
-                                        triplet_path = self.val_file,
+                                        triplet_path = 'dataset/' + self.val_csv,
                                         should_transform = False)
 
 

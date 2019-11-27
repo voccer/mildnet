@@ -893,12 +893,14 @@ def _list_valid_filenames_in_directory(directory, white_list_formats,
                 if fname.lower().endswith('.' + extension):
                     is_valid = True
                     break
+                if fname.lower().endswith('.' + extension+'\r'):
+                    is_valid = True
+                    break
+                
             if is_valid:
                 classes.append(class_indices[subdir])
                 filenames.append(fname)
             else:
-                print(fname)
-                print(white_list_formats)
                 logging.warning(fname+" is not valid")
     return ["q", "p", "n"], filenames
 
