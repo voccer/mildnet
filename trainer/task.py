@@ -94,7 +94,8 @@ def main(job_dir, data_path, model_id, weights_path, loss, train_csv, val_csv, b
 
   # model = multi_gpu_model(model, gpus=4)
   if optimizer=="mo":
-    model.compile(loss=_loss_tensor, optimizer=tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.9, use_nesterov=True), metrics=[accuracy])
+    model.compile(loss=_loss_tensor, optimizer=tf.train.MomentumOptimizer(learning_rate=lr, momentum=0.9,
+                   use_nesterov=True), metrics=[accuracy])
   elif optimizer=="rms":
     model.compile(loss=_loss_tensor, optimizer=tf.train.RMSPropOptimizer(lr), metrics=[accuracy])
   else:
@@ -103,11 +104,14 @@ def main(job_dir, data_path, model_id, weights_path, loss, train_csv, val_csv, b
 
   csv_logger = CSVLogger(job_dir, "output/training.log")
   model_checkpoint_path = "weights-improvement-{epoch:02d}-{val_loss:.2f}.h5"
-  model_checkpointer = ModelCheckpoint(job_dir, model_checkpoint_path, save_best_only=True, save_weights_only=True, monitor="val_loss", verbose=1)
+  model_checkpointer = ModelCheckpoint(job_dir, model_checkpoint_path, save_best_only=True, save_weights_only=True, 
+                                      monitor="val_loss", verbose=1)
   tensorboard = TensorBoard(log_dir=job_dir + '/logs/', histogram_freq=0, write_graph=True, write_images=True)
   # test_accuracy = TestAccuracy(data_path)  # Not using test data as of now
+  from keras.callbacks import EarlyStopping 
+  early_stop = EarlyStopping(monitor='val_loss', min_delta=0, patience=4, verbose=0, mode='auto')
 
-  callbacks = [csv_logger, model_checkpointer, tensorboard]
+  callbacks = [early_stop, model_checkpointer, tensorboard]
   if hyperdash_key:
     callbacks.append(HyperdashCallback(exp))
 

@@ -877,6 +877,7 @@ def _list_valid_filenames_in_directory(directory, white_list_formats,
             triplet = triplet.split(',')
             if len(triplet)!=3:
                 continue
+            
             filenames += triplet
         to_return_tuple= tuple()
         to_return_tuple = (os.path.abspath(subpath),[],filenames,)
