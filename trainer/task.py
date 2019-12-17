@@ -47,7 +47,6 @@ class MyCallBack(Callback):
   def on_batch_end(self, batch, logs={}):
     return
 
-my_callback = MyCallBack()
 
 def main(job_dir, data_path, model_id, weights_path, loss, train_csv, val_csv, batch_size, train_epocs, optimizer, is_tpu, lr, hyperdash_key, **args):
   logging.getLogger().setLevel(logging.INFO)
@@ -139,7 +138,9 @@ def main(job_dir, data_path, model_id, weights_path, loss, train_csv, val_csv, b
   from keras.callbacks import EarlyStopping 
   early_stop = EarlyStopping(monitor='val_loss', min_delta=0, patience=3, verbose=0, mode='auto')
 
-  callbacks = [early_stop, MyCallBack ,model_checkpointer, tensorboard]
+
+  my_callback = MyCallBack()
+  callbacks = [early_stop, my_callback ,model_checkpointer, tensorboard]
   if hyperdash_key:
     callbacks.append(HyperdashCallback(exp))
 
