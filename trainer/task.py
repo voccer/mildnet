@@ -20,6 +20,8 @@ from hyperdash import Experiment
 from tensorflow.keras.callbacks import TensorBoard
 import logging
 from google.colab import drive
+from keras import backend as K
+from keras.callbacks import Callback
 
 class MyCallBack(Callback):
   def on_train_begin(self, logs={}):
