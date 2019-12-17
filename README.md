@@ -1,5 +1,6 @@
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/retrieving-similar-e-commerce-images-using/image-retrieval-street2shop-topwear)](https://paperswithcode.com/sota/image-retrieval-street2shop-topwear?p=retrieving-similar-e-commerce-images-using)     [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/mildnet-a-lightweight-single-scaled-deep/image-retrieval-street2shop-topwear)](https://paperswithcode.com/sota/image-retrieval-street2shop-topwear?p=mildnet-a-lightweight-single-scaled-deep)
 
+
 # MILDNet
 
 This repo cantains the training code used during Visual Similarity research at [Fynd](https://www.fynd.com/). One can easily reproduce our state of the art models [MILDNet](https://arxiv.org/abs/1903.00905) and [Ranknet](https://arxiv.org/abs/1901.03546) and 2 other research works from the past. 25 configs are present which constitutes configurations of most critical experiments by us.
