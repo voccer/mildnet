@@ -19,7 +19,33 @@ import dill
 from hyperdash import Experiment
 from tensorflow.keras.callbacks import TensorBoard
 import logging
+from google.colab import drive
 
+class MyCallBack(Callback):
+  def on_train_begin(self, logs={}):
+    self.aucs = []
+    self.losses = []
+
+  def on_train_end(self, logs={}):
+    return
+
+  def on_epoch_begin(self, epoch, logs={}):
+    drive.mount("/content/drive")
+    f = open('/content/drive/My Drive/share/weights/test/log.txt', 'a')
+    f.write('epoch {}'.format(epoch))
+    f.close()
+
+  def on_epoch_end(self, epoch, logs={}):
+    drive.mount("/content/drive")
+
+
+  def on_batch_begin(self, batch, logs={}):
+    return
+
+  def on_batch_end(self, batch, logs={}):
+    return
+
+my_callback = MyCallBack()
 
 def main(job_dir, data_path, model_id, weights_path, loss, train_csv, val_csv, batch_size, train_epocs, optimizer, is_tpu, lr, hyperdash_key, **args):
   logging.getLogger().setLevel(logging.INFO)
@@ -103,7 +129,7 @@ def main(job_dir, data_path, model_id, weights_path, loss, train_csv, val_csv, b
     return
 
   csv_logger = CSVLogger(job_dir, "output/training.log")
-  model_checkpoint_path = "weights-improvement-{epoch:02d}-{val_loss:.2f}.h5"
+  model_checkpoint_path = "/content/drive/My Drive/share/weights/test/weights-improvement-{epoch:02d}-{val_loss:.2f}.h5"
   model_checkpointer = ModelCheckpoint(job_dir, model_checkpoint_path, save_best_only=True, save_weights_only=True, 
                                       monitor="val_loss", verbose=1)
   tensorboard = TensorBoard(log_dir=job_dir + '/logs/', histogram_freq=0, write_graph=True, write_images=True)
@@ -111,7 +137,7 @@ def main(job_dir, data_path, model_id, weights_path, loss, train_csv, val_csv, b
   from keras.callbacks import EarlyStopping 
   early_stop = EarlyStopping(monitor='val_loss', min_delta=0, patience=3, verbose=0, mode='auto')
 
-  callbacks = [early_stop, model_checkpointer, tensorboard]
+  callbacks = [early_stop, MyCallBack ,model_checkpointer, tensorboard]
   if hyperdash_key:
     callbacks.append(HyperdashCallback(exp))
 
