@@ -22,12 +22,16 @@ import logging
 from google.colab import drive
 from keras import backend as K
 from keras.callbacks import Callback
+import shutil
 
 class MyCallBack(Callback):
   def on_train_begin(self, logs={}):
     self.aucs = []
     self.losses = []
-
+    try:
+      shutil.remove('/content/drive/My Drive/share/weights/test/log.txt')
+    except:
+      pass
   def on_train_end(self, logs={}):
     return
 
