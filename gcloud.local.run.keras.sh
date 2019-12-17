@@ -1,7 +1,7 @@
 source settings.cfg
 source $1
 echo $1
-gcloud ml-engine local train \
+gcloud ai-platform local train \
 --module-name trainer.task \
 --package-path trainer/ \
 --job-dir $MILDNET_JOB_DIR$model_name \
