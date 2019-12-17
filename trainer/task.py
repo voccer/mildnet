@@ -26,7 +26,7 @@ def main(job_dir, data_path, model_id, weights_path, loss, train_csv, val_csv, b
 
   if not os.path.exists("output"):
     os.makedirs("output")
-
+  batch_size = batch_size * 2
   batch_size *= 3
   is_full_data = False
   hyperdash_capture_io = True
@@ -109,7 +109,7 @@ def main(job_dir, data_path, model_id, weights_path, loss, train_csv, val_csv, b
   tensorboard = TensorBoard(log_dir=job_dir + '/logs/', histogram_freq=0, write_graph=True, write_images=True)
   # test_accuracy = TestAccuracy(data_path)  # Not using test data as of now
   from keras.callbacks import EarlyStopping 
-  early_stop = EarlyStopping(monitor='val_loss', min_delta=0, patience=4, verbose=0, mode='auto')
+  early_stop = EarlyStopping(monitor='val_loss', min_delta=0, patience=3, verbose=0, mode='auto')
 
   callbacks = [early_stop, model_checkpointer, tensorboard]
   if hyperdash_key:
@@ -193,7 +193,7 @@ if __name__ == "__main__":
   parser.add_argument(
     '--batch-size',
     help='batch size',
-    default=16,
+    default=32,
     type=int
   )
   parser.add_argument(
