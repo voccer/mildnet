@@ -1,7 +1,7 @@
 source settings.cfg
 source $1
 echo $1
-gcloud ai-platform local train \
+gcloud ml-engine local train \
 --module-name trainer.task \
 --package-path trainer/ \
 --job-dir $MILDNET_JOB_DIR$model_name \
@@ -13,5 +13,5 @@ gcloud ai-platform local train \
 --train-csv=$train_csv \
 --val-csv=$val_csv \
 --train-epocs=$train_epocs \
---lr=$lr
---weight-path=$2
+--lr=$lr \
+--weights-path=$2

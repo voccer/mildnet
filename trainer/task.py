@@ -23,6 +23,7 @@ from google.colab import drive
 from keras import backend as K
 from keras.callbacks import Callback
 import shutil
+import os
 
 class MyCallBack(Callback):
   def on_train_begin(self, logs={}):
@@ -118,7 +119,7 @@ def main(job_dir, data_path, model_id, weights_path, loss, train_csv, val_csv, b
 
   if weights_path:
     try:
-      shutil.remove('weights.h5')
+      os.remove('weights.h5')
     except Exception as e:
       print(e)
     with file_io.FileIO(weights_path, mode='r') as input_f:
