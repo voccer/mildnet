@@ -28,7 +28,7 @@ class DataGenerator(object):
             output_f.write(train_f.read()+"\n"+val_f.read())
       else:
         with file_io.FileIO(self.train_csv+'.txt', mode='w+') as output_f:
-          output_f.write(train_f.read().replace('\r', '').replace('\n', '').replace('"', '')[:-1])
+          output_f.write(train_f.read().replace('\r', '').replace('"', '')[:-1])
     return self.idg.flow_from_directory("dataset/",
                                         batch_size = batch_size,
                                         target_size = self.target_size,shuffle=False,
@@ -37,7 +37,7 @@ class DataGenerator(object):
   def get_test_generator(self, batch_size):
     with file_io.FileIO('dataset/' +  self.val_csv, mode='r') as val_f:
       with file_io.FileIO(self.val_csv+'.txt', mode='w+') as output_f:
-        output_f.write(val_f.read().replace('\r', '').replace('\n', '').replace('"', '')[:-1])
+        output_f.write(val_f.read().replace('\r', '').replace('"', '')[:-1])
     return self.idg.flow_from_directory("dataset/",
                                         batch_size = batch_size,
                                         target_size = self.target_size, shuffle=False,

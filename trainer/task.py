@@ -80,7 +80,7 @@ def main(job_dir, data_path, model_id, weights_path, loss, train_csv, val_csv, b
     exp.param("train_csv", train_csv)
     exp.param("val_csv", val_csv)
 
-  logging.info("Downloading Training Image from path {}".format(data_path))
+  # logging.info("Downloading Training Image from path {}".format(data_path))
   # downloads_training_images(data_path, is_cropped=("_cropped" in job_dir))
 
   logging.info("Building Model: {}".format(model_id))
@@ -126,6 +126,7 @@ def main(job_dir, data_path, model_id, weights_path, loss, train_csv, val_csv, b
         with file_io.FileIO("weights.h5", mode='w+') as output_f:
             output_f.write(input_f.read())
     model.load_weights("weights.h5")
+    print('Model load weight successfull')
 
   # model = multi_gpu_model(model, gpus=4)
   if optimizer=="mo":

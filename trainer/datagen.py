@@ -23,7 +23,8 @@ try:
     from PIL import Image as pil_image
 except ImportError:
     pil_image = None
-
+    
+warnings.filterwarnings("ignore", "(Possibly )?corrupt EXIF data", UserWarning)
 
 def random_rotation(x, rg, row_axis=1, col_axis=2, channel_axis=0,
                     fill_mode='nearest', cval=0.):
@@ -684,6 +685,7 @@ class Iterator(object):
             n.add(filenames[2])
             if len(line)>1:
                 count += 1
+
 
         logging.info('Found %d images belonging to %d classes. Query Images: %d, Positive Image: %d, Negative Images: %d' % (count, 3, len(q), len(p), len(n)))
 
