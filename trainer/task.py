@@ -57,7 +57,6 @@ def main(job_dir, data_path, model_id, weights_path, loss, train_csv, val_csv, b
 
   if not os.path.exists("output"):
     os.makedirs("output")
-  batch_size = batch_size * 2
   batch_size *= 3
   is_full_data = False
   hyperdash_capture_io = True
@@ -118,6 +117,10 @@ def main(job_dir, data_path, model_id, weights_path, loss, train_csv, val_csv, b
   test_generator = dg.get_test_generator(batch_size)
 
   if weights_path:
+    try:
+      shutil.remove('weights.h5')
+    except Exception as e:
+      print(e)
     with file_io.FileIO(weights_path, mode='r') as input_f:
         with file_io.FileIO("weights.h5", mode='w+') as output_f:
             output_f.write(input_f.read())
@@ -134,7 +137,7 @@ def main(job_dir, data_path, model_id, weights_path, loss, train_csv, val_csv, b
     return
 
   csv_logger = CSVLogger(job_dir, "output/training.log")
-  model_checkpoint_path = "/content/drive/My Drive/share/weights/test/weights-improvement-{epoch:02d}-{val_loss:.2f}.h5"
+  model_checkpoint_path = "/content/drive/My Drive/share/weights/train2/weights-improvement-{epoch:02d}-{val_loss:.2f}.h5"
   model_checkpointer = ModelCheckpoint(job_dir, model_checkpoint_path, save_best_only=True, save_weights_only=True, 
                                       monitor="val_loss", verbose=1)
   tensorboard = TensorBoard(log_dir=job_dir + '/logs/', histogram_freq=0, write_graph=True, write_images=True)
