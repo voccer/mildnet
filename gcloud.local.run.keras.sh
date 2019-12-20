@@ -14,4 +14,5 @@ gcloud ml-engine local train \
 --val-csv=$val_csv \
 --train-epocs=$train_epocs \
 --lr=$lr \
---weights-path=$2
+--weights-path=$2 \
+--is-tpu=$3
