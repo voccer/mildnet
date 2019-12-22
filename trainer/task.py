@@ -139,7 +139,7 @@ def main(job_dir, data_path, model_id, weights_path, loss, train_csv, val_csv, b
     return
 
   csv_logger = CSVLogger(job_dir, "output/training.log")
-  model_checkpoint_path = "/content/drive/My Drive/share/weights/train2/weights-improvement-{epoch:02d}-{val_loss:.2f}.h5"
+  model_checkpoint_path = "/content/drive/My Drive/share/weights/train3/weights-improvement-{epoch:02d}-{val_loss:.2f}.h5"
   model_checkpointer = ModelCheckpoint(job_dir, model_checkpoint_path, save_best_only=True, save_weights_only=True, 
                                       monitor="val_loss", verbose=1)
   tensorboard = TensorBoard(log_dir=job_dir + '/logs/', histogram_freq=0, write_graph=True, write_images=True)
