@@ -45,7 +45,7 @@ class MyCallBack(Callback):
     f.close()
 
   def on_epoch_end(self, epoch, logs={}):
-    print('Time to end epoch {} is: {}m'.format(epoch, (time.time() -  self.time_start_epoch)/60))
+    print('\nTime to end epoch {} is: {}m'.format(epoch, (time.time() -  self.time_start_epoch)/60))
     drive.mount("/content/drive")
 
 
