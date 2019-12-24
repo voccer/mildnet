@@ -29,7 +29,7 @@ class DataGenerator(object):
       else:
         with file_io.FileIO(self.train_csv+'.txt', mode='w+') as output_f:
           output_f.write(train_f.read().replace('\r', '').replace('"', '')[:-1])
-    return self.idg.flow_from_directory("dataset/",
+    return self.idg.flow_from_directory("dataset_crop/",
                                         batch_size = batch_size,
                                         target_size = self.target_size,shuffle=False,
                                         triplet_path =self.train_csv+'.txt')
@@ -38,7 +38,7 @@ class DataGenerator(object):
     with file_io.FileIO('dataset/' +  self.val_csv, mode='r') as val_f:
       with file_io.FileIO(self.val_csv+'.txt', mode='w+') as output_f:
         output_f.write(val_f.read().replace('\r', '').replace('"', '')[:-1])
-    return self.idg.flow_from_directory("dataset/",
+    return self.idg.flow_from_directory("dataset_crop/",
                                         batch_size = batch_size,
                                         target_size = self.target_size, shuffle=False,
                                         triplet_path = self.val_csv+'.txt',

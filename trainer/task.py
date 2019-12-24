@@ -137,6 +137,10 @@ def main(job_dir, data_path, model_id, weights_path, loss, train_csv, val_csv, b
                    use_nesterov=True), metrics=[accuracy])
   elif optimizer=="rms":
     model.compile(loss=_loss_tensor, optimizer=tf.train.RMSPropOptimizer(lr), metrics=[accuracy])
+  elif optimizer=="adam":
+    adam = keras.optimizers.Adam(learning_rate=0.001, beta_1=0.9, beta_2=0.999, amsgrad=False)
+    model.compile(loss=_loss_tensor, optimizer=adam, metrics=[accuracy])
+
   else:
     logging.error("Optimizer not supported")
     return

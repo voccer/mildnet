@@ -68,6 +68,44 @@ def hinge_twice_loss_fn(batch_size):
     return hinge_twice_loss
 
 
+def loss_custom_fn(batch_size):
+    def loss_custom(y_true, y_pred):
+        N = tf.constant(4096.0, shape=[1], dtype=tf.float32)
+        beta = tf.constant(4096.0, shape=[1], dtype=tf.float32)
+        y_pred = K.clip(y_pred, _EPSILON, 1.0-_EPSILON)
+        loss =  tf.convert_to_tensor(0,dtype=tf.float32)
+        g = tf.constant(1.0, shape=[1], dtype=tf.float32)
+        const1 = tf.constant(1.0, shape=[1], dtype=tf.float32)
+        epsilon = K.epsilon()
+
+        for i in range(0,batch_size,3):
+            try:
+                anchor = y_pred[i+0]
+                positive =  y_pred[i+1]
+                negative = y_pred[i+2]
+
+                # pos_dist = K.sum(K.square(anchor-positive),1)
+                # neg_dist = K.sum(K.square(anchor-negative),1)
+                 # distance between the anchor and the positive
+                pos_dist = tf.reduce_sum(tf.square(tf.subtract(anchor,positive)),1)
+                # distance between the anchor and the negative
+                neg_dist = tf.reduce_sum(tf.square(tf.subtract(anchor,negative)),1)
+
+                pos_dist = -tf.log(-tf.divide((pos_dist), beta)+const1+epsilon)
+                neg_dist = -tf.log(-tf.divide((N-neg_dist), beta)+const1+epsilon)
+
+                _loss = neg_dist + pos_dist
+
+                loss = (loss + g + _loss)
+            except:
+                continue
+        loss = loss/(batch_size/3)
+        zero = tf.constant(0.0, shape=[1], dtype=tf.float32)
+        return tf.maximum(loss,zero)
+    return loss_custom
+
+
+
 def contrastive_loss_fn(batch_size):
     def contrastive_loss(y_true, y_pred):
         def _contrastive_loss(y1, D):
@@ -106,6 +144,8 @@ def lossless_loss_fn(batch_size):
         loss =  tf.convert_to_tensor(0,dtype=tf.float32)
         g = tf.constant(1.0, shape=[1], dtype=tf.float32)
         const1 = tf.constant(1.0, shape=[1], dtype=tf.float32)
+        epsilon = K.epsilon()
+
         for i in range(0,batch_size,3):
             try:
                 anchor = y_pred[i+0]
