@@ -381,8 +381,9 @@ def ranknet():
     merge_one = concatenate([s1, s2])
     merge_one_norm = Lambda(lambda  x: K.l2_normalize(x,axis=1))(merge_one)
     merge_two = concatenate([merge_one_norm, convnet_output], axis=1)
-    emb = Dense(4096)(merge_two)
+    emb = Dense(4096, activation='sigmoid')(merge_two)
     l2_norm_final = Lambda(lambda  x: K.l2_normalize(x,axis=1))(emb)
+    
     
     final_model = tf.keras.models.Model(inputs=[s1_inp, s2_inp, vgg_model.input], outputs=l2_norm_final)
 

@@ -26,12 +26,15 @@ import shutil
 import os
 import time
 
+drive_path = '/content/drive/My Drive/share/weights/train_7_ranknet_hingeloss_1.3'
+
 class MyCallBack(Callback):
   def on_train_begin(self, logs={}):
     self.aucs = []
     self.losses = []
     try:
       os.remove('/content/drive/My Drive/share/weights/test/log.txt')
+      os.mkdir(drive_path)
     except Exception as e:
       print(e)
   def on_train_end(self, logs={}):
@@ -146,10 +149,10 @@ def main(job_dir, data_path, model_id, weights_path, loss, train_csv, val_csv, b
     return
 
   csv_logger = CSVLogger(job_dir, "output/training.log")
-  model_checkpoint_path = "/content/drive/My Drive/share/weights/train5_ranknet_lossless/weights-improvement-{epoch:02d}-{val_loss:.2f}.h5"
+  model_checkpoint_path = drive_path + "/weights-improvement-{epoch:02d}-{val_loss:.2f}.h5"
   model_checkpointer = ModelCheckpoint(job_dir, model_checkpoint_path, save_best_only=True, save_weights_only=True, 
                                       monitor="val_loss", verbose=1)
-  tensorboard = TensorBoard(log_dir=job_dir + '/logs/', histogram_freq=0, write_graph=True, write_images=True)
+  tensorboard = TensorBoard(log_dir=drive_path + '/logs/', histogram_freq=0, write_graph=True, write_images=True)
   # test_accuracy = TestAccuracy(data_path)  # Not using test data as of now
   from keras.callbacks import EarlyStopping 
   early_stop = EarlyStopping(monitor='val_loss', min_delta=0, patience=3, verbose=0, mode='auto')

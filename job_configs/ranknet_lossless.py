@@ -1,9 +1,9 @@
 model_id="ranknet"
-loss="lossless_loss"
+loss="hinge_new_loss"
 optimizer="mo"
 train_csv="train.csv"
 val_csv="val.csv"
-train_epocs=5
+train_epocs=8
 batch_size=32
-lr=0.001
+lr=0.0001
 config=training_configs/cloudml-gpu.yaml

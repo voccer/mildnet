@@ -70,8 +70,8 @@ def hinge_twice_loss_fn(batch_size):
 
 def loss_custom_fn(batch_size):
     def loss_custom(y_true, y_pred):
-        N = tf.constant(4096.0, shape=[1], dtype=tf.float32)
-        beta = tf.constant(4096.0, shape=[1], dtype=tf.float32)
+        N = tf.constant(4096, shape=[1], dtype=tf.float32)
+        beta = tf.constant(4096, shape=[1], dtype=tf.float32)
         y_pred = K.clip(y_pred, _EPSILON, 1.0-_EPSILON)
         loss =  tf.convert_to_tensor(0,dtype=tf.float32)
         g = tf.constant(1.0, shape=[1], dtype=tf.float32)
