@@ -21,7 +21,7 @@ class DataGenerator(object):
     self.val_csv = val_csv
 
   def get_train_generator(self, batch_size, is_full_data = False):
-    with file_io.FileIO('dataset/' + self.train_csv, mode='r') as train_f:
+    with file_io.FileIO('dataset_crop/' + self.train_csv, mode='r') as train_f:
       if is_full_data:
         with file_io.FileIO(self.data_path + self.train_csv, mode='r') as val_f:
           with file_io.FileIO(self.train_csv, mode='w+') as output_f:
@@ -35,7 +35,7 @@ class DataGenerator(object):
                                         triplet_path =self.train_csv+'.txt')
 
   def get_test_generator(self, batch_size):
-    with file_io.FileIO('dataset/' +  self.val_csv, mode='r') as val_f:
+    with file_io.FileIO('dataset_crop/' +  self.val_csv, mode='r') as val_f:
       with file_io.FileIO(self.val_csv+'.txt', mode='w+') as output_f:
         output_f.write(val_f.read().replace('\r', '').replace('"', '')[:-1])
     return self.idg.flow_from_directory("dataset_crop/",
